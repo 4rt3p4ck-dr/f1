@@ -2,7 +2,7 @@
 const globeMaxSize = 500;
 ---
 <h2>
-<span class="text-primary dark:text-slate-400">Nombre</span>
+	<span id="nombre" class="text-primary text-2xl dark:text-white"></span>
 </h2>
 <canvas id="cobe" width={globeMaxSize} height={globeMaxSize} class="dark:opacity-100"></canvas>
 
@@ -21,58 +21,36 @@ const globeMaxSize = 500;
 	const doublePi = Math.PI * 2;
 	const focusRef = { current: [0, 0] };
 	
-	//Nombres:
-			// Albert Park, Melbourne
-			// Shanghái
-			// Suzuka
-			// Sakhir
-			// Yeda
-			// Miami Gardens
-			// Imola
-			// Montecarlo
-			// Montmeló
-			// Montreal
-			// Spielberg
-			// Silverstone
-			// Spa-Francorchamps
-			// Mogyoród
-			// Zandvoort
-			// Monza
-			// Bakú
-			// Marina Bay
-			// Austin
-			// Ciudad de México
-			// Interlagos
-			// Las Vegas
-			// Lusail
-			// Yas Marina
-
-	const markers = [
-		{ location: [-37.8497, 144.9680], size: 0.05 },
-		{ location: [31.3389, 121.2220], size: 0.05 },
-		{ location: [34.8431, 136.5410], size: 0.05 },
-		{ location: [26.0325, 50.5106], size: 0.05 },
-		{ location: [21.6319, 39.1044], size: 0.05 },
-		{ location: [25.9580, -80.2389], size: 0.05 },
-		{ location: [44.3439, 11.7167], size: 0.05 },
-		{ location: [43.7347, 7.4206], size: 0.05 },
-		{ location: [41.5700, 2.2611], size: 0.05 },
-		{ location: [45.5005, -73.5221], size: 0.05 },
-		{ location: [47.2197, 14.7647], size: 0.05 },
-		{ location: [52.0786, -1.0169], size: 0.05 },
-		{ location: [50.4372, 5.9714], size: 0.05 },
-		{ location: [47.5789, 19.2486], size: 0.05 },
-		{ location: [52.3888, 4.5409], size: 0.05 },
-		{ location: [45.6156, 9.2811], size: 0.05 },
-		{ location: [40.3725, 49.8533], size: 0.05 },
-		{ location: [1.2914, 103.8644], size: 0.05 },
-		{ location: [30.1328, -97.6411], size: 0.05 },
-		{ location: [19.4042, -99.0907], size: 0.05 },
-		{ location: [-23.7036, -46.6997], size: 0.05 },
-		{ location: [36.1147, -115.1698], size: 0.05 },
-		{ location: [25.4903, 51.4542], size: 0.05 },
-		{ location: [24.4672, 54.6031], size: 0.05 }
+	const allMarkers = [
+		{ location: [-37.8497, 144.9680], size: 0.05, name: "Gran Premio de Australia, Circuito de Albert Park, 14 al 16 de marzo", endDate: new Date("2025-03-16") },
+		{ location: [31.3389, 121.2220], size: 0.05, name: "Gran Premio de China, Circuito Internacional de Shanghái, 21 al 23 de marzo", endDate: new Date("2025-03-23") },
+		{ location: [34.8431, 136.5410], size: 0.05, name: "Gran Premio de Japón, Circuito de Suzuka, 4 al 6 de abril", endDate: new Date("2025-04-06") },
+		{ location: [26.0325, 50.5106], size: 0.05, name: "Gran Premio de Baréin, Circuito Internacional de Sakhir, 11 al 13 de abril", endDate: new Date("2025-04-13") },
+		{ location: [21.6319, 39.1044], size: 0.05, name: "Gran Premio de Arabia Saudita, Circuito de Yeda, 18 al 20 de abril", endDate: new Date("2025-04-20") },
+		{ location: [25.9580, -80.2389], size: 0.05, name: "Gran Premio de Miami, Autódromo Internacional de Miami, 2 al 4 de mayo", endDate: new Date("2025-05-04") },
+		{ location: [44.3439, 11.7167], size: 0.05, name: "Gran Premio de Emilia-Romaña, Autódromo Imola, 16 al 18 de mayo", endDate: new Date("2025-05-18") },
+		{ location: [43.7347, 7.4206], size: 0.05, name: "Gran Premio de Mónaco, Circuito Montecarlo, 23 al 25 de mayo", endDate: new Date("2025-05-25") },
+		{ location: [41.5700, 2.2611], size: 0.05, name: "Gran Premio de España, Circuito de Montmeló, 30 de mayo al 1 de junio", endDate: new Date("2025-06-01") },
+		{ location: [45.5005, -73.5221], size: 0.05, name: "Gran Premio de Canadá, Circuito Gilles Villeneuve Montreal, 13 al 15 de junio", endDate: new Date("2025-06-15") },
+		{ location: [47.2197, 14.7647], size: 0.05, name: "Gran Premio de Austria, Red Bull Ring Spielberg, 27 al 29 de junio", endDate: new Date("2025-06-29") },
+		{ location: [52.0786, -1.0169], size: 0.05, name: "Gran Premio de Gran Bretaña, Circuito de Silverstone, 4 al 6 de julio", endDate: new Date("2025-07-06") },
+		{ location: [50.4372, 5.9714], size: 0.05, name: "Gran Premio de Bélgica, Circuito de Spa-Francorchamps, 1 al 3 de agosto", endDate: new Date("2025-08-03") },
+		{ location: [47.5789, 19.2486], size: 0.05, name: "Gran Premio de Hungría, Hungaroring, 18 al 20 de julio", endDate: new Date("2025-07-20") },
+		{ location: [52.3888, 4.5409], size: 0.05, name: "Gran Premio de los Países Bajos, Circuito de Zandvoort, 22 al 24 de agosto", endDate: new Date("2025-08-24") },
+		{ location: [45.6156, 9.2811], size: 0.05, name: "Gran Premio de Italia, Autodromo Nazionale di Monza, 5 al 7 de septiembre", endDate: new Date("2025-09-07") },
+		{ location: [40.3725, 49.8533], size: 0.05, name: "Gran Premio de Azerbaiyán, Circuito de Bakú, 19 al 21 de septiembre", endDate: new Date("2025-09-21") },
+		{ location: [1.2914, 103.8644], size: 0.05, name: "Gran Premio de Singapur, Circuito de Marina Bay, 3 al 5 de octubre", endDate: new Date("2025-10-05") },
+		{ location: [30.1328, -97.6411], size: 0.05, name: "Gran Premio de Estados Unidos, Circuito de las Américas, 17 al 19 de octubre", endDate: new Date("2025-10-19") },
+		{ location: [19.4042, -99.0907], size: 0.05, name: "Gran Premio de México, Autódromo Hermanos Rodríguez, 24 al 26 de octubre", endDate: new Date("2025-10-26") },
+		{ location: [-23.7036, -46.6997], size: 0.05, name: "Gran Premio de São Paulo, Autódromo José Carlos Pace, 7 al 9 de noviembre", endDate: new Date("2025-11-09") },
+		{ location: [36.1147, -115.1698], size: 0.05, name: "Gran Premio de Las Vegas, Circuito de Las Vegas, 21 al 23 de noviembre", endDate: new Date("2025-11-23") },
+		{ location: [25.4903, 51.4542], size: 0.05, name: "Gran Premio de Catar, Circuito Internacional de Losail, 28 al 30 de noviembre", endDate: new Date("2025-11-30") },
+		{ location: [24.4672, 54.6031], size: 0.05, name: "Gran Premio de Abu Dabi, Circuito Yas Marina, 5 al 7 de diciembre", endDate: new Date("2025-12-07") }
 	];
+
+	const markers = allMarkers.filter(marker => new Date() <= marker.endDate);
+
+	let previousMarkerIndex = null;
 
 	function computeGlobeSize(globeMaxSize) {
 		let size = globeMaxSize;
@@ -118,25 +96,32 @@ const globeMaxSize = 500;
 				currentTheta = currentTheta * 0.92 + focusTheta * 0.08;
 				state.width = globeSize;
 				state.height = globeSize;
+				state.markers = markers.map(marker => ({
+					...marker,
+					color: marker.color || [1, 0.1, 0] // Default color if not set
+				})); // Ensure markers are updated
 			},
 		});
 
 		return globe;
 	}
 
-	addGlobe(canvas);
+	const globe = addGlobe(canvas);
 
 	let currentMarkerIndex = 0;
 	setInterval(() => {
+		if (previousMarkerIndex !== null) {
+			markers[previousMarkerIndex].size = 0.05; // Revert the size of the previous marker
+			delete markers[previousMarkerIndex].color; // Revert the color of the previous marker
+		}
 		const marker = markers[currentMarkerIndex];
+		marker.size = 0.1; // Change the size of the current marker
+		marker.color = [0, 0.5, 1]; // Change the color of the current marker
 		focusRef.current = locationToAngles(marker.location[0], marker.location[1]);
+		document.getElementById("nombre").textContent = marker.name; // Update the text content of the span
+		previousMarkerIndex = currentMarkerIndex;
 		currentMarkerIndex = (currentMarkerIndex + 1) % markers.length;
+		globe.render(); // Force re-render
 	}, 3000);
 
-	// // Update the globe dimensions when the window is resized
-	// window.addEventListener("resize", () => {
-	// 	let globeSize = computeGlobeSize(globeMaxSize);
-	// 	canvas.width = globeSize;
-	// 	canvas.height = globeSize;
-	// });
 </script>

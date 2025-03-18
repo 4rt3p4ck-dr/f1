@@ -1,4 +1,5 @@
 ---
+import { useState, useEffect } from 'react';
 import Cobe from "@components/cobe.astro";
 ---
 
@@ -89,108 +90,47 @@ import Cobe from "@components/cobe.astro";
 	<table class="table-auto border-collapse border  dark:text-slate-400 border-gray-400 mt-8">
 		<thead>
 			<tr>
-				<th class="border border-gray-300 px-4 py-2">Grand Prix</th>
-				<th class="border border-gray-300 px-4 py-2">Circuit</th>
+				<th class="border border-gray-300 px-4 py-2">N.º</th>
+				<th class="border border-gray-300 px-4 py-2">Gran Premio</th>
+				<th class="border border-gray-300 px-4 py-2">Circuito</th>
+				<th class="border border-gray-300 px-4 py-2">Fecha</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Australia</td>
-				<td class="border border-gray-300 px-4 py-2">Albert Park, Melbourne</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de China</td>
-				<td class="border border-gray-300 px-4 py-2">Shanghái</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Japón</td>
-				<td class="border border-gray-300 px-4 py-2">Suzuka</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Baréin</td>
-				<td class="border border-gray-300 px-4 py-2">Sakhir</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Arabia Saudita</td>
-				<td class="border border-gray-300 px-4 py-2">Yeda</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Miami</td>
-				<td class="border border-gray-300 px-4 py-2">Miami Gardens</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Emilia-Romaña</td>
-				<td class="border border-gray-300 px-4 py-2">Imola</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Mónaco</td>
-				<td class="border border-gray-300 px-4 py-2">Montecarlo</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de España</td>
-				<td class="border border-gray-300 px-4 py-2">Montmeló</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Canadá</td>
-				<td class="border border-gray-300 px-4 py-2">Montreal</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Austria</td>
-				<td class="border border-gray-300 px-4 py-2">Spielberg</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Gran Bretaña</td>
-				<td class="border border-gray-300 px-4 py-2">Silverstone</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Bélgica</td>
-				<td class="border border-gray-300 px-4 py-2">Spa-Francorchamps</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Hungría</td>
-				<td class="border border-gray-300 px-4 py-2">Mogyoród</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Países Bajos</td>
-				<td class="border border-gray-300 px-4 py-2">Zandvoort</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Italia</td>
-				<td class="border border-gray-300 px-4 py-2">Monza</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Azerbaiyán</td>
-				<td class="border border-gray-300 px-4 py-2">Bakú</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Singapur</td>
-				<td class="border border-gray-300 px-4 py-2">Marina Bay</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de EE.UU.</td>
-				<td class="border border-gray-300 px-4 py-2">Austin</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de México</td>
-				<td class="border border-gray-300 px-4 py-2">Ciudad de México</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de São Paulo</td>
-				<td class="border border-gray-300 px-4 py-2">Interlagos</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Las Vegas</td>
-				<td class="border border-gray-300 px-4 py-2">Las Vegas</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Catar</td>
-				<td class="border border-gray-300 px-4 py-2">Lusail</td>
-			</tr>
-			<tr>
-				<td class="border border-gray-300 px-4 py-2">GP de Abu Dabi</td>
-				<td class="border border-gray-300 px-4 py-2">Yas Marina</td>
-			</tr>
-		</tbody>
+        {[
+          { number: 1, name: "Gran Premio de Australia", circuit: "Circuito de Albert Park, Melbourne", date: "14 al 16 de marzo", endDate: new Date("2025-03-16") },
+          { number: 2, name: "Gran Premio de China", circuit: "Circuito Internacional de Shanghái", date: "21 al 23 de marzo", endDate: new Date("2025-03-23") },
+          { number: 3, name: "Gran Premio de Japón", circuit: "Circuito de Suzuka, Suzuka", date: "4 al 6 de abril", endDate: new Date("2025-04-06") },
+          { number: 4, name: "Gran Premio de Baréin", circuit: "Circuito Internacional de Baréin, Sakhir", date: "11 al 13 de abril", endDate: new Date("2025-04-13") },
+          { number: 5, name: "Gran Premio de Arabia Saudita", circuit: "Circuito de la Corniche de Yeda, Yeda", date: "18 al 20 de abril", endDate: new Date("2025-04-20") },
+          { number: 6, name: "Gran Premio de Miami", circuit: "Autódromo Internacional de Miami, Miami", date: "2 al 4 de mayo", endDate: new Date("2025-05-04") },
+          { number: 7, name: "Gran Premio de Emilia-Romaña", circuit: "Autódromo Enzo e Dino Ferrari, Imola", date: "16 al 18 de mayo", endDate: new Date("2025-05-18") },
+          { number: 8, name: "Gran Premio de Mónaco", circuit: "Circuito de Mónaco, Montecarlo", date: "23 al 25 de mayo", endDate: new Date("2025-05-25") },
+          { number: 9, name: "Gran Premio de España", circuit: "Circuito de Barcelona-Cataluña, Montmeló", date: "30 de mayo al 1 de junio", endDate: new Date("2025-06-01") },
+          { number: 10, name: "Gran Premio de Canadá", circuit: "Circuito Gilles Villeneuve, Montreal", date: "13 al 15 de junio", endDate: new Date("2025-06-15") },
+          { number: 11, name: "Gran Premio de Austria", circuit: "Red Bull Ring, Spielberg", date: "27 al 29 de junio", endDate: new Date("2025-06-29") },
+          { number: 12, name: "Gran Premio de Gran Bretaña", circuit: "Circuito de Silverstone, Silverstone", date: "4 al 6 de julio", endDate: new Date("2025-07-06") },
+          { number: 13, name: "Gran Premio de Hungría", circuit: "Hungaroring, Mogyoród", date: "18 al 20 de julio", endDate: new Date("2025-07-20") },
+          { number: 14, name: "Gran Premio de Bélgica", circuit: "Circuito de Spa-Francorchamps, Spa", date: "1 al 3 de agosto", endDate: new Date("2025-08-03") },
+          { number: 15, name: "Gran Premio de los Países Bajos", circuit: "Circuito de Zandvoort, Zandvoort", date: "22 al 24 de agosto", endDate: new Date("2025-08-24") },
+          { number: 16, name: "Gran Premio de Italia", circuit: "Autodromo Nazionale di Monza, Monza", date: "5 al 7 de septiembre", endDate: new Date("2025-09-07") },
+          { number: 17, name: "Gran Premio de Azerbaiyán", circuit: "Circuito callejero de Bakú, Bakú", date: "19 al 21 de septiembre", endDate: new Date("2025-09-21") },
+          { number: 18, name: "Gran Premio de Singapur", circuit: "Circuito callejero de Marina Bay, Marina Bay", date: "3 al 5 de octubre", endDate: new Date("2025-10-05") },
+          { number: 19, name: "Gran Premio de Estados Unidos", circuit: "Circuito de las Américas, Austin", date: "17 al 19 de octubre", endDate: new Date("2025-10-19") },
+          { number: 20, name: "Gran Premio de México", circuit: "Autódromo Hermanos Rodríguez, Ciudad de México", date: "24 al 26 de octubre", endDate: new Date("2025-10-26") },
+          { number: 21, name: "Gran Premio de São Paulo", circuit: "Autódromo José Carlos Pace, São Paulo", date: "7 al 9 de noviembre", endDate: new Date("2025-11-09") },
+          { number: 22, name: "Gran Premio de Las Vegas", circuit: "Circuito callejero de Las Vegas, Las Vegas", date: "21 al 23 de noviembre", endDate: new Date("2025-11-23") },
+          { number: 23, name: "Gran Premio de Catar", circuit: "Circuito Internacional de Losail, Lusail", date: "28 al 30 de noviembre", endDate: new Date("2025-11-30") },
+          { number: 24, name: "Gran Premio de Abu Dabi", circuit: "Circuito Yas Marina, Isla Yas", date: "5 al 7 de diciembre", endDate: new Date("2025-12-07") }
+        ].map((race) => (
+          <tr class={new Date() > race.endDate ? 'text-red-500' : ''}>
+            <td class="border border-gray-300 px-4 py-2">{race.number}</td>
+            <td class="border border-gray-300 px-4 py-2">{race.name}</td>
+            <td class="border border-gray-300 px-4 py-2">{race.circuit}</td>
+            <td class="border border-gray-300 px-4 py-2">{race.date}</td>
+          </tr>
+        ))}
+      </tbody>
 	</table>
 </div>
 </div>
