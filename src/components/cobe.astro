@@ -81,9 +81,9 @@ const globeMaxSize = 500;
 	addGlobe(canvas);
 
 	// TODO: Update the globe dimensions when the window is resized
-	//   window.addEventListener("resize", () => {
-	//     let globeSize = computeGlobeSize(globeMaxSize);
-	//     canvas.width = globeSize;
-	//     canvas.height = globeSize;
-	//   });
+	  window.addEventListener("resize", () => {
+	    let globeSize = computeGlobeSize(globeMaxSize);
+	    canvas.width = globeSize;
+	    canvas.height = globeSize;
+	  });
 </script>
