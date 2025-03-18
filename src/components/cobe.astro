@@ -14,6 +14,36 @@ const globeMaxSize = 500;
 	canvas.height = globeSize;
 
 	let phi = 0;
+	let currentPhi = 0;
+	let currentTheta = 0;
+	const doublePi = Math.PI * 2;
+	const focusRef = { current: [0, 0] };
+	const markers = [
+		{ location: [-37.8497, 144.9680], size: 0.05 },
+		{ location: [31.3389, 121.2220], size: 0.05 },
+		{ location: [34.8431, 136.5410], size: 0.05 },
+		{ location: [26.0325, 50.5106], size: 0.05 },
+		{ location: [21.6319, 39.1044], size: 0.05 },
+		{ location: [25.9580, -80.2389], size: 0.05 },
+		{ location: [44.3439, 11.7167], size: 0.05 },
+		{ location: [43.7347, 7.4206], size: 0.05 },
+		{ location: [41.5700, 2.2611], size: 0.05 },
+		{ location: [45.5005, -73.5221], size: 0.05 },
+		{ location: [47.2197, 14.7647], size: 0.05 },
+		{ location: [52.0786, -1.0169], size: 0.05 },
+		{ location: [50.4372, 5.9714], size: 0.05 },
+		{ location: [47.5789, 19.2486], size: 0.05 },
+		{ location: [52.3888, 4.5409], size: 0.05 },
+		{ location: [45.6156, 9.2811], size: 0.05 },
+		{ location: [40.3725, 49.8533], size: 0.05 },
+		{ location: [1.2914, 103.8644], size: 0.05 },
+		{ location: [30.1328, -97.6411], size: 0.05 },
+		{ location: [19.4042, -99.0907], size: 0.05 },
+		{ location: [-23.7036, -46.6997], size: 0.05 },
+		{ location: [36.1147, -115.1698], size: 0.05 },
+		{ location: [25.4903, 51.4542], size: 0.05 },
+		{ location: [24.4672, 54.6031], size: 0.05 }
+	];
 
 	function computeGlobeSize(globeMaxSize) {
 		let size = globeMaxSize;
@@ -22,6 +52,10 @@ const globeMaxSize = 500;
 			size = width - 300;
 		}
 		return size;
+	}
+
+	function locationToAngles(lat, long) {
+		return [Math.PI - ((long * Math.PI) / 180 - Math.PI / 2), (lat * Math.PI) / 180];
 	}
 
 	function addGlobe(canvas) {
@@ -40,38 +74,21 @@ const globeMaxSize = 500;
 			glowColor: [1, 0.1, 0],
 			offset: [0, 0],
 			opacity: 0.5,
-			markers: [
-				{ location: [-37.8497, 144.9680], size: 0.05 },
-				{ location: [31.3389, 121.2220], size: 0.05 },
-				{ location: [34.8431, 136.5410], size: 0.05 },
-				{ location: [26.0325, 50.5106], size: 0.05 },
-				{ location: [21.6319, 39.1044], size: 0.05 },
-				{ location: [25.9580, -80.2389], size: 0.05 },
-				{ location: [44.3439, 11.7167], size: 0.05 },
-				{ location: [43.7347, 7.4206], size: 0.05 },
-				{ location: [41.5700, 2.2611], size: 0.05 },
-				{ location: [45.5005, -73.5221], size: 0.05 },
-				{ location: [47.2197, 14.7647], size: 0.05 },
-				{ location: [52.0786, -1.0169], size: 0.05 },
-				{ location: [50.4372, 5.9714], size: 0.05 },
-				{ location: [47.5789, 19.2486], size: 0.05 },
-				{ location: [52.3888, 4.5409], size: 0.05 },
-				{ location: [45.6156, 9.2811], size: 0.05 },
-				{ location: [40.3725, 49.8533], size: 0.05 },
-				{ location: [1.2914, 103.8644], size: 0.05 },
-				{ location: [30.1328, -97.6411], size: 0.05 },
-				{ location: [19.4042, -99.0907], size: 0.05 },
-				{ location: [-23.7036, -46.6997], size: 0.05 },
-				{ location: [36.1147, -115.1698], size: 0.05 },
-				{ location: [25.4903, 51.4542], size: 0.05 },
-				{ location: [24.4672, 54.6031], size: 0.05 }
-			],
-			
+			markers: markers,
 			onRender: (state) => {
-				// Called on every animation frame.
-				// `state` will be an empty object, return updated params.
-				state.phi = phi;
-				phi += 0.007;
+				state.phi = currentPhi;
+				state.theta = currentTheta;
+				const [focusPhi, focusTheta] = focusRef.current;
+				const distPositive = (focusPhi - currentPhi + doublePi) % doublePi;
+				const distNegative = (currentPhi - focusPhi + doublePi) % doublePi;
+				if (distPositive < distNegative) {
+					currentPhi += distPositive * 0.08;
+				} else {
+					currentPhi -= distNegative * 0.08;
+				}
+				currentTheta = currentTheta * 0.92 + focusTheta * 0.08;
+				state.width = globeSize;
+				state.height = globeSize;
 			},
 		});
 
@@ -80,10 +97,17 @@ const globeMaxSize = 500;
 
 	addGlobe(canvas);
 
-	// TODO: Update the globe dimensions when the window is resized
-	  window.addEventListener("resize", () => {
-	    let globeSize = computeGlobeSize(globeMaxSize);
-	    canvas.width = globeSize;
-	    canvas.height = globeSize;
-	  });
+	let currentMarkerIndex = 0;
+	setInterval(() => {
+		const marker = markers[currentMarkerIndex];
+		focusRef.current = locationToAngles(marker.location[0], marker.location[1]);
+		currentMarkerIndex = (currentMarkerIndex + 1) % markers.length;
+	}, 3000);
+
+	// Update the globe dimensions when the window is resized
+	window.addEventListener("resize", () => {
+		let globeSize = computeGlobeSize(globeMaxSize);
+		canvas.width = globeSize;
+		canvas.height = globeSize;
+	});
 </script>
