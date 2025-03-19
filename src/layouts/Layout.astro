@@ -1,5 +1,4 @@
 ---
-import { ViewTransitions } from "astro:transitions";
 import Footer from "@components/footer.astro";
 import Navbar from "@components/navbar/navbar.astro";
 import "@fontsource-variable/inter";
@@ -22,11 +21,6 @@ const makeTitle = title
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="theme-color" content="#ffffff" />
-		<ViewTransitions />
-
-		<!-- Global CSS -->
-		<link rel="stylesheet" href="/index.css" />
-
 		<script is:inline>
 			function handleThemeChange() {
 				if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
@@ -42,7 +36,9 @@ const makeTitle = title
 
 		
 	</head>
-	<body class="dark:bg-stone-950">
+	<body class="dark:bg-stone-950 h-dvh justify-center items-center text-[8px]
+	min-[375px]:text-[10px]
+	min-[425px]:text-[12px]">
 		<Navbar />
 		<slot />
 		<Footer >

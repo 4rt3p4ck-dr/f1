@@ -2,7 +2,7 @@
 const globeMaxSize = 500;
 ---
 <h2>
-	<span id="nombre" class="text-primary text-2xl dark:text-white"></span>
+	<span id="nombre" class="dark:text-white"></span>
 </h2>
 <canvas id="cobe" width={globeMaxSize} height={globeMaxSize} class="dark:opacity-100"></canvas>
 
@@ -56,7 +56,7 @@ const globeMaxSize = 500;
 		let size = globeMaxSize;
 		const { innerWidth: width } = window;
 		if (width < globeMaxSize) {
-			size = width - 300;
+			size = width - 25;
 		}
 		return size;
 	}
@@ -70,15 +70,15 @@ const globeMaxSize = 500;
 			width: globeSize,
 			height: globeSize,
 			phi: 0,
-			theta: 0,
+			theta: 0.3,
 			dark: 1,
-			diffuse: 1.5,
+			diffuse: 3,
 			scale: 1,
-			mapSamples: 25000,
+			mapSamples: 16000,
 			mapBrightness: 12,
-			baseColor: [0.3, 0.3, 0.3],
+			baseColor:[1, 1, 1],
 			markerColor: [1, 0.1, 0],
-			glowColor: [0, 0.5, 1],
+			glowColor: [1.2, 1.2, 1.2],
 			offset: [0, 0],
 			opacity: 1,
 			markers: markers,
@@ -96,10 +96,10 @@ const globeMaxSize = 500;
 				currentTheta = currentTheta * 0.92 + focusTheta * 0.08;
 				state.width = globeSize;
 				state.height = globeSize;
-				state.markers = markers.map(marker => ({
-					...marker,
-					color: marker.color || [1, 0.1, 0] // Default color if not set
-				})); // Ensure markers are updated
+				// state.markers = markers.map(marker => ({
+				// 	...marker,
+					
+				// })); 
 			},
 		});
 
@@ -112,11 +112,10 @@ const globeMaxSize = 500;
 	setInterval(() => {
 		if (previousMarkerIndex !== null) {
 			markers[previousMarkerIndex].size = 0.05; // Revert the size of the previous marker
-			delete markers[previousMarkerIndex].color; // Revert the color of the previous marker
+			
 		}
 		const marker = markers[currentMarkerIndex];
 		marker.size = 0.1; // Change the size of the current marker
-		marker.color = [0, 0.5, 1]; // Change the color of the current marker
 		focusRef.current = locationToAngles(marker.location[0], marker.location[1]);
 		document.getElementById("nombre").textContent = marker.name; // Update the text content of the span
 		previousMarkerIndex = currentMarkerIndex;
