@@ -89,11 +89,11 @@ const globeMaxSize = 500;
 				const distPositive = (focusPhi - currentPhi + doublePi) % doublePi;
 				const distNegative = (currentPhi - focusPhi + doublePi) % doublePi;
 				if (distPositive < distNegative) {
-					currentPhi += distPositive * 0.08;
+					currentPhi += distPositive * 0.04; // Reduced speed for smoother transition
 				} else {
-					currentPhi -= distNegative * 0.08;
+					currentPhi -= distNegative * 0.04; // Reduced speed for smoother transition
 				}
-				currentTheta = currentTheta * 0.92 + focusTheta * 0.08;
+				currentTheta = currentTheta * 0.96 + focusTheta * 0.04; // Reduced speed for smoother transition
 				state.width = globeSize;
 				state.height = globeSize;
 				state.markers = markers.map(marker => ({
