@@ -1,7 +1,7 @@
 ---
 import Themeselector from "@components/themeselector.astro";
+import Link from "@components/ui/link.astro";
 import { Icon } from "astro-icon/components";
-
 export const menuitems = [
 
 ];
@@ -10,7 +10,7 @@ export const menuitems = [
 <div
   class="flex flex-col max-w-screen-xl px-4 mx-auto md:justify-between md:flex-col md:px-6 lg:px-8 z-10 md:pt-2 relative"
 >
-  <div class="p-4 flex flex-row items-center justify-between">
+  <di class="p-4 flex flex-row items-center justify-between">
     <a
 	
       class="flex gap-3 items-center text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark:text-white focus:outline-none focus:shadow-outline"
@@ -18,6 +18,7 @@ export const menuitems = [
       <Icon name="logo" width="50" class="dark:invert" />
       F1 2025
     </a>
+    <Link href="/clasificacion">Cl</Link>
 		<div class="flex justify-end gap-3">
 			<Themeselector />
 		</div>

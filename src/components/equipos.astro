@@ -1,0 +1,68 @@
+---
+import { useState, useEffect } from 'react';
+
+interface Team {
+  PlayerId: string;
+  FullName: string;
+  TeamName: string;
+  OverallPoints: string;
+  GamedayPoints: string;
+  PositionName: string;
+  CountryName: string;
+}
+
+const [teams, setTeams] = useState<Team[]>([]);
+
+useEffect(() => {
+  fetch(
+    "https://fantasy.formula1.com/feeds/drivers/1_en.json"
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data.Data.Value);
+      const fetchedTeams = data.Data.Value.map((item) => ({
+        PlayerId: item.PlayerId,
+        PositionName: item.PositionName,
+        FullName: item.FUllName,
+        TeamName: item.TeamName,
+        OverallPoints: item.OverallPpints,
+        GamedayPoints: item.GamedayPoints,
+        CountryName: item.CountryName,
+      }));
+      setTeams(fetchedTeams);
+      console.log(fetchedTeams);
+    })
+    .catch((error) => console.error("Error fetching data:", error));
+}, []);
+---
+<div class="text-white flex dark:bg-stone-950 h-dvh justify-center items-center text-[8px]
+min-[375px]:text-[10px]
+min-[425px]:text-[12px]">
+  <h1>Data</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Full Name</th>
+        <th>Team Name</th>
+        <th>Overall Points</th>
+        <th>Gameday Points</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        teams.length > 0 ? (
+          teams.map((team) => (
+            <tr data-key={team.PlayerId}>
+              <td>{team.FullName}</td>
+              <td>{team.TeamName}</td>
+              <td>{team.OverallPoints}</td>
+              <td>{team.GamedayPoints}</td>
+            </tr>
+          ))
+        ) : (
+          <tr><td colspan="4">Loading...</td></tr>
+        )
+      }
+    </tbody>
+  </table>
+</div>

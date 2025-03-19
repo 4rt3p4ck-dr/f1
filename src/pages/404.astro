@@ -1,6 +1,5 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import { localizePath } from "astro-i18next";
 
 const title = "Error 404";
 ---
@@ -15,7 +14,7 @@ const title = "Error 404";
 				</h2>
 				<p class=" dark:text-slate-400 text-3xl font-semibold md:text-3xl ">Lo sentimos, no pudimos encontrar esta página.</p>
 				<p class="mt-4 mb-8 text-lg text-muted dark:text-slate-400">Pero no te preocupes, puedes encontrar muchas otras cosas en nuestra página principal.</p>
-				<a rel="noopener noreferrer" href={localizePath("/")} class="btn ml-4  dark:text-slate-100">Volver a la página principal</a>
+				
 			</div>
 		</div>
 	</section>
