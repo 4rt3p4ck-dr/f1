@@ -53,11 +53,11 @@ export default defineConfig({
             globPatterns: ["*.js"],
         },
         devOptions: {
-            enabled: false,
+            enabled: true, // Cambiado a true
             navigateFallbackAllowlist: [/^\/404$/],
             suppressWarnings: true,
         },
-		}), icon(), react()],
+    }), icon(), react()],
     markdown: {
         rehypePlugins: [
             rehypeSlug,
