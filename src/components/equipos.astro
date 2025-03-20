@@ -16,6 +16,8 @@ const [teams, setTeams] = useState<Team[]>([]);
 useEffect(() => {
   fetch(
     "https://fantasy.formula1.com/feeds/drivers/1_en.json"
+    //Todo el doc
+    //https://docs.google.com/spreadsheets/d/e/2PACX-1vS3cvhET0KUAFaGwVhHvY29KxfA8MqHM0UdzGSM0co0Hfv1v0UUuESZeOBgjk_pxtVGv2hRKlSg2vo0/pub?output=csv
   )
     .then((response) => response.json())
     .then((data) => {
