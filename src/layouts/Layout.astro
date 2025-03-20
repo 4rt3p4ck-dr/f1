@@ -3,14 +3,6 @@ import Footer from "@components/footer.astro";
 import Navbar from "@components/navbar/navbar.astro";
 import "@fontsource-variable/inter";
 
-export interface Props {
-	title?: string;
-	lang?: string;
-}
-const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
-const { title, lang = null } = Astro.props;
-
-const makeTitle = title
 ---
 
 <!doctype html>
