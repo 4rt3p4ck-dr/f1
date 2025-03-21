@@ -1,4 +1,87 @@
 ---
+import 'dotenv/config';
+
+
+const bgColors = {
+  Alpine: "bg-[#0093CC]",
+  AstonMartin: "bg-[#229971]",
+  Ferrari: "bg-[#E80020]",
+  Haas: "bg-[#B6BABD]",
+  KickSauber: "bg-[#52E252]",
+  McLaren: "bg-[#FF8000]",
+  Mercedes: "bg-[#27F4D2]",
+  RacingBulls: "bg-[#6692FF]",
+  RedBullRacing: "bg-[#3671C6]",
+  Williams: "bg-[#64C4FF]",
+};
+type TeamInfo = {
+  teamBal: number;
+  teamVal: number;
+  maxTeambal: number;
+  subsallowed: number;
+  userSubsleft: number;
+};
+type Player = {
+  id: string;
+  isfinal: number;
+  iscaptain: number;
+  ismgcaptain: number;
+  playerpostion: number;
+};
+type Team = {
+  gdrank: number;
+  ovrank: number;
+  teamno: number;
+  teambal: number;
+  teamval: number;
+  gdpoints: number;
+  matchday: number;
+  ovpoints: number;
+  playerid: Player[];
+  teamname: string;
+  usersubs: number;
+  boosterid: string | null;
+  team_info: TeamInfo;
+  fttourgdid: number;
+  fttourmdid: number;
+  iswildcard: string | null;
+  maxteambal: number;
+  capplayerid: string;
+  subsallowed: number;
+  isaccounting: number;
+  usersubsleft: number;
+  extrasubscost: number;
+  islateonboard: number;
+  mgcapplayerid: string | null;
+  race_category: string;
+  finalfxracecat: string | null;
+  finalfxraceday: string | null;
+  isboostertaken: number;
+  extradrstakengd: string | null;
+  finalfixtakengd: string | null;
+  isextradrstaken: number;
+  isfinalfixtaken: number;
+  iswildcardtaken: number;
+  wildcardtakengd: number;
+  autopilottakengd: string | null;
+  isautopilottaken: number;
+  islimitlesstaken: number;
+  limitlesstakengd: string | null;
+  isnonigativetaken: number;
+  nonigativetakengd: string | null;
+  finalfxnewplayerid: string | null;
+  finalfxoldplayerid: string | null;
+  player_swap_details: string | null;
+  is_wildcard_taken_gd_id: string | null;
+  inactive_driver_penality_points: number;
+};
+const t1: Team[] = [];
+const t2: Team[] = [];
+const t3: Team[] = [];
+const t4: Team[] = [];
+const t5: Team[] = [];
+const t6: Team[] = [];
+const t7: Team[] = [];
 type act = {
   PlayerId: string;
   Skill: number;
@@ -52,7 +135,6 @@ type act = {
   ProjectedNoNegativePoints: string;
   ProjectedOverallPpints: string;
 };
-//C
 const c1: act[] = [];
 const c2: act[] = [];
 const c3: act[] = [];
@@ -103,7 +185,6 @@ const c: act[][] = [
   c23,
   c24,
 ];
-//P
 const p1: act[] = [];
 const p2: act[] = [];
 const p3: act[] = [];
@@ -154,15 +235,12 @@ const p: act[][] = [
   p23,
   p24,
 ];
-
 let indice = 1;
 for (indice; indice < p.length; indice++) {
   await fetch(`https://fantasy.formula1.com/feeds/drivers/${indice}_es.json`)
-  // await fetch(`https://fantasy.formula1.com/feeds/drivers/1_es.json`)
-
     .then((res) => res.json())
     .then((data) => {
-      console.log(data.Data.Value)
+      console.log(data.Data.Value);
       for (let i = 0; i < data.Data.Value.length; i++) {
         if (data.Data.Value[i].PositionName === "DRIVER") {
           p[indice - 1].push(data.Data.Value[i]);
@@ -175,27 +253,126 @@ for (indice; indice < p.length; indice++) {
       indice = p.length;
     });
 }
-// await fetch(
-//   "https://fantasy.formula1.com/services/user/opponentteam/opponentgamedayplayerteamget/1/e7d3d5b2-fe71-11ef-bfc1-8f273b7b7e8d-0-156785025/1/1/1?buster=1742393577687",
-//   {
-//     headers: {
-//       Authorization: "Bearer YOUR_API_KEY_OR_TOKEN",
-//     },
-//   }
-// )
-//   .then((res) => console.log(res))
-//   .catch((err) => {
-//     console.log(err);
-//   });
----
+await fetch("https://fantasy.formula1.com/services/user/opponentteam/opponentgamedayplayerteamget/1/26340306-fe6b-11ef-bafd-f9277be0d6f5-0-156776409/1/1/1?buster=1742393622681",
+  {
+    headers: { Cookie: String(process.env.COOKIE) },
+  }
+)
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.Data.Value.userTeam[0]) {
+      t1.push(data.Data.Value.userTeam[0]);
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
+await fetch(
+  "https://fantasy.formula1.com/services/user/opponentteam/opponentgamedayplayerteamget/1/e7d3d5b2-fe71-11ef-bfc1-8f273b7b7e8d-0-156785025/1/1/1?buster=1742393577687",
+  
+    {
+    headers: { Cookie: String(process.env.COOKIE) },
+  }
+  
+)
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.Data.Value.userTeam[0]) {
+      t2.push(data.Data.Value.userTeam[0]);
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+await fetch(
+  "https://fantasy.formula1.com/services/user/opponentteam/opponentgamedayplayerteamget/1/f729c398-fe6f-11ef-be7f-2f9b458b67c0-0-156782678/1/1/1?buster=1742393637798",
+  {
+    headers: { Cookie: String(process.env.COOKIE) },
+  }
+)
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.Data.Value.userTeam[0]) {
+      t3.push(data.Data.Value.userTeam[0]);
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+await fetch(
+  "https://fantasy.formula1.com/services/user/opponentteam/opponentgamedayplayerteamget/1/ca241704-fe6f-11ef-aa57-6dc464d2868e-0-177873983/1/1/1?buster=1742393652681",
+  {
+    headers: { Cookie: String(process.env.COOKIE) },
+  }
+)
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.Data.Value.userTeam[0]) {
+      t4.push(data.Data.Value.userTeam[0]);
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+await fetch(
+  "https://fantasy.formula1.com/services/user/opponentteam/opponentgamedayplayerteamget/1/eb86f662-fe80-11ef-87ed-6fdff2e0d3e1-0-156781750/1/1/1?buster=1742393652681",
+  {
+    headers: { Cookie: String(process.env.COOKIE) },
+  }
+)
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.Data.Value.userTeam[0]) {
+      t5.push(data.Data.Value.userTeam[0]);
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+await fetch(
+  "https://fantasy.formula1.com/services/user/opponentteam/opponentgamedayplayerteamget/1/2e7ac292-00bf-11f0-b739-d5ca545f3999-0-156778006/1/1/1?buster=1742393667678",
+  {
+    headers: { Cookie: String(process.env.COOKIE) },
+  }
+)
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.Data.Value.userTeam[0]) {
+      t6.push(data.Data.Value.userTeam[0]);
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+await fetch(
+  "https://fantasy.formula1.com/services/user/opponentteam/opponentgamedayplayerteamget/1/fbe1cfae-0106-11f0-b6cc-a5749b1801ef-0-156784923/1/1/1?buster=1742393682803",
+  {
+    headers: { Cookie: String(process.env.COOKIE) },
+  }
+)
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.Data.Value.userTeam[0]) {
+      t7.push(data.Data.Value.userTeam[0]);
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+---
 {
   Array.from({ length: indice }, (_, ind) =>
     p[ind] && p[ind][0] && p[ind][0].FUllName !== "" ? (
-      <div class="flex flex-col justify-center " >
+      <div class="flex flex-col justify-center">
         <h2 class="text-center text-base">Nº{ind + 1} P:</h2>
-        <table class="table-auto border-collapse border  dark:text-white border-gray-400 mt-8">
-          <thead class="p-1">
+        <table class="table-auto border-collapse border  dark:text-white border-[#FFD700]">
+          <thead class="bg-[#FFD700]">
             <tr>
               <th>NOMBRE</th>
               <th>GENERAL</th>
@@ -207,7 +384,7 @@ for (indice; indice < p.length; indice++) {
               <th>% CAP</th>
             </tr>
           </thead>
-          <tbody class="text-center">
+          <tbody class="text-center ">
             {p[ind] &&
               p[ind]
                 .sort(
@@ -215,15 +392,24 @@ for (indice; indice < p.length; indice++) {
                     parseFloat(b.ProjectedGamedayPoints) -
                     parseFloat(a.ProjectedGamedayPoints)
                 )
-                .map((item) => (
-                  <tr id={item.TeamId}>
+                .map((item, index) => (
+                  <tr
+                    id={item.TeamId}
+                    class={index % 2 === 0 ? "bg-zinc-800" : "bg-zinc-700"}
+                  >
                     <td>{item.FUllName}</td>
                     <td>{item.ProjectedOverallPpints}</td>
                     <td>{item.ProjectedGamedayPoints}</td>
-                    <td>
+                    <td
+                      class={
+                        item.AdditionalStats.value_for_money > 0
+                          ? "bg-green-500"
+                          : "bg-red-500"
+                      }
+                    >
                       {item.AdditionalStats.value_for_money}
                     </td>
-                    <td>{(item.AdditionalStats.fastest_lap_pts)/10}</td>
+                    <td>{item.AdditionalStats.fastest_lap_pts / 10}</td>
                     <td>{item.AdditionalStats.total_position_gained_lost}</td>
                     <td>{item.SelectedPercentage}</td>
                     <td>{item.CaptainSelectedPercentage}</td>
@@ -233,8 +419,8 @@ for (indice; indice < p.length; indice++) {
         </table>
 
         <h2 class="text-center text-base">Nº{ind + 1} C:</h2>
-        <table class="table-auto border-collapse border  dark:text-white border-gray-400 mt-8">
-          <thead>
+        <table class="table-auto border-collapse border  dark:text-white border-[#FFD700]">
+          <thead class="bg-[#FFD700]">
             <tr>
               <th>NOMBRE</th>
               <th>GENERAL</th>
@@ -242,7 +428,6 @@ for (indice; indice < p.length; indice++) {
               <th>PTS X M€</th>
               <th>POS+-</th>
               <th>% USO</th>
-              
             </tr>
           </thead>
           <tbody class="p-4 text-center">
@@ -254,17 +439,36 @@ for (indice; indice < p.length; indice++) {
                     parseFloat(a.ProjectedGamedayPoints)
                 )
                 .map((item) => (
-                  <tr id={item.TeamId}>
+                  <tr class={`${bgColors[item.FUllName.trim().replace(" ","") as keyof typeof bgColors]}`} id={item.TeamId}>
                     <td>{item.FUllName}</td>
                     <td>{item.ProjectedOverallPpints}</td>
                     <td>{item.ProjectedGamedayPoints}</td>
-                    <td>
-                      {item.AdditionalStats.value_for_money}
-                    </td>
+                    <td>{item.AdditionalStats.value_for_money}</td>
                     <td>{item.AdditionalStats.total_position_gained_lost}</td>
                     <td>{item.SelectedPercentage}</td>
                   </tr>
                 ))}
+          </tbody>
+        </table>
+        <h2 class="text-center text-base">Nº{ind + 1} T:</h2>
+        <table class="table-auto border-collapse border dark:text-white border-[#FFD700] text-center">
+          <thead class="bg-[#FFD700]">
+            <tr>
+              <th>NOMBRE</th>
+              <th>Nº GP</th>
+              <th>PTS GP</th>
+              <th>GENERAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            {t1.concat(t2, t3, t4, t5, t6, t7).map((team) => (
+              <tr>
+                <td>{decodeURIComponent(team.teamname)}</td>
+                <td>{team.matchday}</td>
+                <td>{team.gdpoints}</td>
+                <td>{team.ovpoints}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
