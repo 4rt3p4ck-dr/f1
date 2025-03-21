@@ -111,7 +111,6 @@ const globeMaxSize = 500;
 	setInterval(() => {
 		if (previousMarkerIndex !== null) {
 			markers[previousMarkerIndex].size = 0.05; // Revert the size of the previous marker
-			
 		}
 		const marker = markers[currentMarkerIndex];
 		marker.size = 0.1; // Change the size of the current marker
@@ -120,6 +119,6 @@ const globeMaxSize = 500;
 		previousMarkerIndex = currentMarkerIndex;
 		currentMarkerIndex = (currentMarkerIndex + 1) % markers.length;
 		globe.render(); // Force re-render
-	}, 3000);
+	}, 3500);
 
 </script>
