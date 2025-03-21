@@ -192,9 +192,9 @@ for (indice; indice < p.length; indice++) {
 {
   Array.from({ length: indice }, (_, ind) =>
     p[ind] && p[ind][0] && p[ind][0].FUllName !== "" ? (
-      <div class="flex flex-col justify-center">
+      <div class="flex flex-col justify-center " >
         <h2 class="text-center text-base">Nº{ind + 1} P:</h2>
-        <table class="table border border-slate-400 w-full">
+        <table class="table-auto border-collapse border  dark:text-white border-gray-400 mt-8">
           <thead class="p-1">
             <tr>
               <th>NOMBRE</th>
@@ -233,7 +233,7 @@ for (indice; indice < p.length; indice++) {
         </table>
 
         <h2 class="text-center text-base">Nº{ind + 1} C:</h2>
-        <table class="border border-slate-400">
+        <table class="table-auto border-collapse border  dark:text-white border-gray-400 mt-8">
           <thead>
             <tr>
               <th>NOMBRE</th>
