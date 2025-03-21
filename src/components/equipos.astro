@@ -1,70 +1,273 @@
 ---
-import { useState, useEffect } from 'react';
-
-interface Team {
+type act = {
   PlayerId: string;
-  FullName: string;
-  TeamName: string;
-  OverallPoints: string;
-  GamedayPoints: string;
+  Skill: number;
   PositionName: string;
+  Value: number;
+  TeamId: string;
+  FUllName: string;
+  DisplayName: string;
+  TeamName: string;
+  Status: string;
+  IsActive: string;
+  DriverTLA: string;
+  DriverReference: string;
   CountryName: string;
-}
+  OverallPpints: string;
+  GamedayPoints: string;
+  SelectedPercentage: string;
+  CaptainSelectedPercentage: string;
+  OldPlayerValue: number;
+  BestRaceFinished: string;
+  HigestGridStart: string;
+  HigestChampFinish: string;
+  FastestPitstopAward: string;
+  BestRaceFinishCount: number;
+  HighestGridStartCount: number;
+  HighestChampFinishCount: number;
+  FastestPitstopAwardCount: number;
+  QualifyingPoints: string;
+  RacePoints: string;
+  SprintPoints: string;
+  NoNegativePoints: string;
+  F1PlayerId: string;
+  FirstName: string;
+  LastName: string;
+  SessionWisePoints: object[];
+  AdditionalStats: {
+    fastest_lap_pts: number;
+    dotd_pts: number;
+    overtaking_pts: number;
+    q3_finishes_pts: number;
+    top10_race_position_pts: number;
+    top8_sprint_position_pts: number;
+    total_position_pts: number;
+    total_position_gained_lost: number;
+    total_dnf_dq_pts: number;
+    value_for_money: number;
+  };
+  old_Value: number;
+  new_value: number;
+  ProjectedGamedayPoints: string;
+  ProjectedNoNegativePoints: string;
+  ProjectedOverallPpints: string;
+};
+//C
+const c1: act[] = [];
+const c2: act[] = [];
+const c3: act[] = [];
+const c4: act[] = [];
+const c5: act[] = [];
+const c6: act[] = [];
+const c7: act[] = [];
+const c8: act[] = [];
+const c9: act[] = [];
+const c10: act[] = [];
+const c11: act[] = [];
+const c12: act[] = [];
+const c13: act[] = [];
+const c14: act[] = [];
+const c15: act[] = [];
+const c16: act[] = [];
+const c17: act[] = [];
+const c18: act[] = [];
+const c19: act[] = [];
+const c20: act[] = [];
+const c21: act[] = [];
+const c22: act[] = [];
+const c23: act[] = [];
+const c24: act[] = [];
+const c: act[][] = [
+  c1,
+  c2,
+  c3,
+  c4,
+  c5,
+  c6,
+  c7,
+  c8,
+  c9,
+  c10,
+  c11,
+  c12,
+  c13,
+  c14,
+  c15,
+  c16,
+  c17,
+  c18,
+  c19,
+  c20,
+  c21,
+  c22,
+  c23,
+  c24,
+];
+//P
+const p1: act[] = [];
+const p2: act[] = [];
+const p3: act[] = [];
+const p4: act[] = [];
+const p5: act[] = [];
+const p6: act[] = [];
+const p7: act[] = [];
+const p8: act[] = [];
+const p9: act[] = [];
+const p10: act[] = [];
+const p11: act[] = [];
+const p12: act[] = [];
+const p13: act[] = [];
+const p14: act[] = [];
+const p15: act[] = [];
+const p16: act[] = [];
+const p17: act[] = [];
+const p18: act[] = [];
+const p19: act[] = [];
+const p20: act[] = [];
+const p21: act[] = [];
+const p22: act[] = [];
+const p23: act[] = [];
+const p24: act[] = [];
+const p: act[][] = [
+  p1,
+  p2,
+  p3,
+  p4,
+  p5,
+  p6,
+  p7,
+  p8,
+  p9,
+  p10,
+  p11,
+  p12,
+  p13,
+  p14,
+  p15,
+  p16,
+  p17,
+  p18,
+  p19,
+  p20,
+  p21,
+  p22,
+  p23,
+  p24,
+];
 
-const [teams, setTeams] = useState<Team[]>([]);
+let indice = 1;
+for (indice; indice < p.length; indice++) {
+  await fetch(`https://fantasy.formula1.com/feeds/drivers/${indice}_es.json`)
+  // await fetch(`https://fantasy.formula1.com/feeds/drivers/1_es.json`)
 
-useEffect(() => {
-  fetch(
-    "https://fantasy.formula1.com/feeds/drivers/1_en.json"
-    //Todo el doc
-    //https://docs.google.com/spreadsheets/d/e/2PACX-1vS3cvhET0KUAFaGwVhHvY29KxfA8MqHM0UdzGSM0co0Hfv1v0UUuESZeOBgjk_pxtVGv2hRKlSg2vo0/pub?output=csv
-  )
-    .then((response) => response.json())
+    .then((res) => res.json())
     .then((data) => {
-      console.log(data.Data.Value);
-      const fetchedTeams = data.Data.Value.map((item) => ({
-        PlayerId: item.PlayerId,
-        PositionName: item.PositionName,
-        FullName: item.FUllName,
-        TeamName: item.TeamName,
-        OverallPoints: item.OverallPpints,
-        GamedayPoints: item.GamedayPoints,
-        CountryName: item.CountryName,
-      }));
-      setTeams(fetchedTeams);
-      console.log(fetchedTeams);
-    })
-    .catch((error) => console.error("Error fetching data:", error));
-}, []);
----
-<div class="text-white flex dark:bg-stone-950 h-dvh justify-center items-center text-[8px]
-min-[375px]:text-[10px]
-min-[425px]:text-[12px]">
-  <h1>Data</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Full Name</th>
-        <th>Team Name</th>
-        <th>Overall Points</th>
-        <th>Gameday Points</th>
-      </tr>
-    </thead>
-    <tbody>
-      {
-        teams.length > 0 ? (
-          teams.map((team) => (
-            <tr data-key={team.PlayerId}>
-              <td>{team.FullName}</td>
-              <td>{team.TeamName}</td>
-              <td>{team.OverallPoints}</td>
-              <td>{team.GamedayPoints}</td>
-            </tr>
-          ))
-        ) : (
-          <tr><td colspan="4">Loading...</td></tr>
-        )
+      console.log(data.Data.Value)
+      for (let i = 0; i < data.Data.Value.length; i++) {
+        if (data.Data.Value[i].PositionName === "DRIVER") {
+          p[indice - 1].push(data.Data.Value[i]);
+        } else if (data.Data.Value[i].PositionName === "CONSTRUCTOR") {
+          c[indice - 1].push(data.Data.Value[i]);
+        }
       }
-    </tbody>
-  </table>
-</div>
+    })
+    .catch((err) => {
+      indice = p.length;
+    });
+}
+// await fetch(
+//   "https://fantasy.formula1.com/services/user/opponentteam/opponentgamedayplayerteamget/1/e7d3d5b2-fe71-11ef-bfc1-8f273b7b7e8d-0-156785025/1/1/1?buster=1742393577687",
+//   {
+//     headers: {
+//       Authorization: "Bearer YOUR_API_KEY_OR_TOKEN",
+//     },
+//   }
+// )
+//   .then((res) => console.log(res))
+//   .catch((err) => {
+//     console.log(err);
+//   });
+---
+
+{
+  Array.from({ length: indice }, (_, ind) =>
+    p[ind] && p[ind][0] && p[ind][0].FUllName !== "" ? (
+      <div class="flex flex-col justify-center">
+        <h2 class="text-center text-base">Nº{ind + 1} P:</h2>
+        <table class="table border border-slate-400 w-full">
+          <thead class="p-1">
+            <tr>
+              <th>NOMBRE</th>
+              <th>GENERAL</th>
+              <th>GP</th>
+              <th>PTS X M€</th>
+              <th>V.RAP</th>
+              <th>POS+-</th>
+              <th>% USO</th>
+              <th>% CAP</th>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+            {p[ind] &&
+              p[ind]
+                .sort(
+                  (a, b) =>
+                    parseFloat(b.ProjectedGamedayPoints) -
+                    parseFloat(a.ProjectedGamedayPoints)
+                )
+                .map((item) => (
+                  <tr id={item.TeamId}>
+                    <td>{item.FUllName}</td>
+                    <td>{item.ProjectedOverallPpints}</td>
+                    <td>{item.ProjectedGamedayPoints}</td>
+                    <td>
+                      {item.AdditionalStats.value_for_money}
+                    </td>
+                    <td>{(item.AdditionalStats.fastest_lap_pts)/10}</td>
+                    <td>{item.AdditionalStats.total_position_gained_lost}</td>
+                    <td>{item.SelectedPercentage}</td>
+                    <td>{item.CaptainSelectedPercentage}</td>
+                  </tr>
+                ))}
+          </tbody>
+        </table>
+
+        <h2 class="text-center text-base">Nº{ind + 1} C:</h2>
+        <table class="border border-slate-400">
+          <thead>
+            <tr>
+              <th>NOMBRE</th>
+              <th>GENERAL</th>
+              <th>GP</th>
+              <th>PTS X M€</th>
+              <th>POS+-</th>
+              <th>% USO</th>
+              
+            </tr>
+          </thead>
+          <tbody class="p-4 text-center">
+            {c[ind] &&
+              c[ind]
+                .sort(
+                  (a, b) =>
+                    parseFloat(b.ProjectedGamedayPoints) -
+                    parseFloat(a.ProjectedGamedayPoints)
+                )
+                .map((item) => (
+                  <tr id={item.TeamId}>
+                    <td>{item.FUllName}</td>
+                    <td>{item.ProjectedOverallPpints}</td>
+                    <td>{item.ProjectedGamedayPoints}</td>
+                    <td>
+                      {item.AdditionalStats.value_for_money}
+                    </td>
+                    <td>{item.AdditionalStats.total_position_gained_lost}</td>
+                    <td>{item.SelectedPercentage}</td>
+                  </tr>
+                ))}
+          </tbody>
+        </table>
+      </div>
+    ) : null
+  )
+}
