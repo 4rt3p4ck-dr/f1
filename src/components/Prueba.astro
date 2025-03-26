@@ -1,0 +1,176 @@
+<script>
+  import * as VTable from "@visactor/vtable";
+  const { ListTable, themes } = VTable;
+
+  let tableData: string[][] = [];
+  const fetchData = async () => {
+    const response = await fetch(
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vS3cvhET0KUAFaGwVhHvY29KxfA8MqHM0UdzGSM0co0Hfv1v0UUuESZeOBgjk_pxtVGv2hRKlSg2vo0/pub?gid=491202300&single=true&output=csv"
+    );
+    const csvText = await response.text();
+    tableData = csvText.split("\n").map((row) => row.split(","));
+  };
+
+  await fetchData();
+
+  const customTheme = themes.BRIGHT.extends({
+    bodyStyle: {
+      bgColor: (args) => {
+        const { row, col, table } = args;
+        const field = table.options.columns[col]?.field; // Obtener el campo de la columna actual
+        const rowData = table.options.records[row]; // Obtener los datos de la fila actual
+
+        // Aplicar colores solo a las filas de agrupación (nivel superior) en la columna "jugador"
+        if (rowData?.type === "tree-group" && field === "jugador") {
+          const rank = rowData.rank; // Obtener el rank del jugador
+          if (rank === 1) return "#FFD700"; // Oro
+          if (rank === 2) return "#C0C0C0"; // Plata
+          if (rank === 3) return "#CD7F32"; // Bronce
+        }
+        return "white"; // Fondo blanco para otras filas o columnas
+      },
+    },
+  });
+
+  // Agrupar datos por GP (item[1])
+  const datos = tableData.slice(1).reduce((acc: { group: string; children: any[] }[], item) => {
+    const gp = item[1]; // GP (Circuito)
+    const jugador = item[2]; // "Jugador"
+
+    const puntos = parseFloat(item[4]) || 0; // Convertir puntos a número
+    const child = {
+      piloto_constructor: item[3]?.trim().replace(" ", ""), // "Piloto/constructor" (limpiar espacios)
+      puntos, // "Puntos"
+      x2: item[5], // "x2"
+      x3: item[6], // "x3"
+      alta: item[12], // "Alta"
+      baja: item[13], // "Baja"
+      puntosManazas: item[14]?.trim(), // "PuntosManazas" (removiendo caracteres extra como '\r')
+      chips_usados: [
+        item[7] && "Chip Arreglo Final",
+        item[8] && "Chip No negativos",
+        item[9] && "Chip Piloto automatico",
+        item[10] && "Chip comodín",
+      ]
+        .filter(Boolean) // Filtrar valores nulos o vacíos
+        .join(", "), // Unir los nombres de los chips usados en una sola cadena
+    };
+
+    // Buscar si ya existe el GP en el acumulador
+    const existingGroup = acc.find((group) => group.group === gp);
+    if (existingGroup) {
+      // Buscar si ya existe el jugador dentro del grupo
+      const existingJugador = existingGroup.children.find((j) => j.jugador === jugador);
+      if (existingJugador) {
+        existingJugador.children.push(child);
+        existingJugador.total_puntos += puntos; // Sumar puntos al total del jugador
+      } else {
+        existingGroup.children.push({
+          jugador,
+          total_puntos: puntos, // Inicializar el total de puntos
+          children: [child],
+        });
+      }
+    } else {
+      acc.push({
+        group: gp, // GP (Circuito)
+        children: [
+          {
+            jugador,
+            total_puntos: puntos, // Inicializar el total de puntos
+            children: [child],
+          },
+        ],
+      });
+    }
+
+    return acc;
+  }, []);
+
+  console.log("Grouped data", datos);
+
+  // Filtrar los datos para excluir los grupos con group === ""
+  const filteredData = datos.filter((group) => group.group !== "");
+
+  // Ordenar los jugadores dentro de cada GP por total_puntos en orden descendente
+  filteredData.forEach((group) => {
+    group.children.sort((a, b) => b.total_puntos - a.total_puntos);
+  });
+
+  // Aplanar los datos para que coincidan con el formato de ListTable
+  const flattenedData = filteredData.flatMap((group) =>
+    group.children.flatMap((jugador, index, array) =>
+      jugador.children.map((child: { [key: string]: any }) => ({
+        group: group.group, // GP
+        jugador: `${index + 1}. ${jugador.jugador} (${jugador.total_puntos})`, // Añadir el orden delante del nombre del jugador
+        rank: index + 1, // Posición del jugador en el GP
+        type: "tree-leaf", // Indicar que es una fila de jugador
+        ...child, // Datos del jugador
+      }))
+    )
+  );
+
+  console.log("Flattened data", flattenedData);
+
+  const columns = [
+    {
+      field: "piloto_constructor",
+      title: "Piloto/constructor",
+      width: "auto",
+    },
+    {
+      field: "puntos",
+      title: "Puntos",
+      width: "auto",
+    },
+    {
+      field: "x2",
+      title: "x2",
+      width: "auto",
+    },
+    {
+      field: "x3",
+      title: "x3",
+      width: "auto",
+    },
+    {
+      field: "chips_usados",
+      title: "Chips Usados",
+      width: "auto",
+    },
+    {
+      field: "alta",
+      title: "Alta",
+      width: "auto",
+    },
+    {
+      field: "baja",
+      title: "Baja",
+      width: "auto",
+    },
+    {
+      field: "puntosManazas",
+      title: "PuntosManazas",
+      width: "auto",
+    },
+  ];
+
+  const option: any = {
+    container: document.getElementById("tableContainer"),
+    records: flattenedData, // Usar los datos aplanados y filtrados
+    columns,
+    enableTreeStickCell: true,
+    groupBy: ["group", "jugador"], // Mantener la agrupación
+    widthMode: "standard",
+    theme: customTheme, // Aplicar el tema personalizado
+  };
+
+  const tableContainer = document.getElementById("tableContainer");
+  if (tableContainer) {
+    const tableInstance = new ListTable(option);
+  } else {
+    console.error("The table container was not found.");
+  }
+</script>
+
+<div id="tableContainer" style="width: auto; height: 100vh;"></div>
